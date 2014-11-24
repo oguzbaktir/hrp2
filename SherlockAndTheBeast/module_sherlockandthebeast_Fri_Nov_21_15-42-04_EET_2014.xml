@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="module_sherlockandthebeast" default="compile.module.sherlockandthebeast">
+  <dirname property="module.sherlockandthebeast.basedir" file="${ant.file.module_sherlockandthebeast}"/>
+  
+  <property name="module.jdk.home.sherlockandthebeast" value="${project.jdk.home}"/>
+  <property name="module.jdk.bin.sherlockandthebeast" value="${project.jdk.bin}"/>
+  <property name="module.jdk.classpath.sherlockandthebeast" value="${project.jdk.classpath}"/>
+  
+  <property name="compiler.args.sherlockandthebeast" value="-encoding UTF-8 -source 1.6 ${compiler.args}"/>
+  
+  <property name="sherlockandthebeast.output.dir" value="${module.sherlockandthebeast.basedir}/../out/production/SherlockAndTheBeast"/>
+  <property name="sherlockandthebeast.testoutput.dir" value="${module.sherlockandthebeast.basedir}/../out/test/SherlockAndTheBeast"/>
+  
+  <path id="sherlockandthebeast.module.bootclasspath">
+    <!-- Paths to be included in compilation bootclasspath -->
+  </path>
+  
+  <path id="sherlockandthebeast.module.production.classpath">
+    <path refid="${module.jdk.classpath.sherlockandthebeast}"/>
+  </path>
+  
+  <path id="sherlockandthebeast.runtime.production.module.classpath">
+    <pathelement location="${sherlockandthebeast.output.dir}"/>
+  </path>
+  
+  <path id="sherlockandthebeast.module.classpath">
+    <path refid="${module.jdk.classpath.sherlockandthebeast}"/>
+    <pathelement location="${sherlockandthebeast.output.dir}"/>
+  </path>
+  
+  <path id="sherlockandthebeast.runtime.module.classpath">
+    <pathelement location="${sherlockandthebeast.testoutput.dir}"/>
+    <pathelement location="${sherlockandthebeast.output.dir}"/>
+  </path>
+  
+  
+  <patternset id="excluded.from.module.sherlockandthebeast">
+    <patternset refid="ignored.files"/>
+  </patternset>
+  
+  <patternset id="excluded.from.compilation.sherlockandthebeast">
+    <patternset refid="excluded.from.module.sherlockandthebeast"/>
+  </patternset>
+  
+  <path id="sherlockandthebeast.module.sourcepath">
+    <dirset dir="${module.sherlockandthebeast.basedir}">
+      <include name="src"/>
+    </dirset>
+  </path>
+  
+  
+  <target name="compile.module.sherlockandthebeast" depends="compile.module.sherlockandthebeast.production,compile.module.sherlockandthebeast.tests" description="Compile module SherlockAndTheBeast"/>
+  
+  <target name="compile.module.sherlockandthebeast.production" depends="register.custom.compilers" description="Compile module SherlockAndTheBeast; production classes">
+    <mkdir dir="${sherlockandthebeast.output.dir}"/>
+    <javac2 destdir="${sherlockandthebeast.output.dir}" debug="${compiler.debug}" nowarn="${compiler.generate.no.warnings}" memorymaximumsize="${compiler.max.memory}" fork="true" executable="${module.jdk.bin.sherlockandthebeast}/javac">
+      <compilerarg line="${compiler.args.sherlockandthebeast}"/>
+      <bootclasspath refid="sherlockandthebeast.module.bootclasspath"/>
+      <classpath refid="sherlockandthebeast.module.production.classpath"/>
+      <src refid="sherlockandthebeast.module.sourcepath"/>
+      <patternset refid="excluded.from.compilation.sherlockandthebeast"/>
+    </javac2>
+    
+    <copy todir="${sherlockandthebeast.output.dir}">
+      <fileset dir="${module.sherlockandthebeast.basedir}/src">
+        <patternset refid="compiler.resources"/>
+        <type type="file"/>
+      </fileset>
+    </copy>
+  </target>
+  
+  <target name="compile.module.sherlockandthebeast.tests" depends="register.custom.compilers,compile.module.sherlockandthebeast.production" description="compile module SherlockAndTheBeast; test classes" unless="skip.tests"/>
+  
+  <target name="clean.module.sherlockandthebeast" description="cleanup module">
+    <delete dir="${sherlockandthebeast.output.dir}"/>
+    <delete dir="${sherlockandthebeast.testoutput.dir}"/>
+  </target>
+</project>

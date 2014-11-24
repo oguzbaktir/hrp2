@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="module_hackerrankprojects" default="compile.module.hackerrankprojects">
+  <dirname property="module.hackerrankprojects.basedir" file="${ant.file.module_hackerrankprojects}"/>
+
+    <property name="project.jdk.home" value="C\:/Program Files/Java/jdk1.7.0_72"/>
+    <property name="module.jdk.home.hackerrankprojects" value="${project.jdk.home}"/>
+    <property name="project.jdk.bin" value="C\:/Program Files/Java/jdk1.7.0_72/bin"/>
+    <property name="module.jdk.bin.hackerrankprojects" value="${project.jdk.bin}"/>
+    <property name="project.jdk.classpath" value="C\:/Program Files/Java/jdk1.7.0_72/lib"/>
+    <property name="module.jdk.classpath.hackerrankprojects" value="${project.jdk.classpath}"/>
+  
+  <property name="compiler.args.hackerrankprojects" value="-encoding UTF-8 -source 1.6 ${compiler.args}"/>
+  
+  <property name="hackerrankprojects.output.dir" value="${module.hackerrankprojects.basedir}/out/production/HackerrankProjects"/>
+  <property name="hackerrankprojects.testoutput.dir" value="${module.hackerrankprojects.basedir}/out/test/HackerrankProjects"/>
+  
+  <path id="hackerrankprojects.module.bootclasspath">
+    <!-- Paths to be included in compilation bootclasspath -->
+  </path>
+  
+  <path id="hackerrankprojects.module.production.classpath">
+    <path refid="${module.jdk.classpath.hackerrankprojects}"/>
+  </path>
+  
+  <path id="hackerrankprojects.runtime.production.module.classpath">
+    <pathelement location="${hackerrankprojects.output.dir}"/>
+  </path>
+  
+  <path id="hackerrankprojects.module.classpath">
+    <path refid="${module.jdk.classpath.hackerrankprojects}"/>
+    <pathelement location="${hackerrankprojects.output.dir}"/>
+  </path>
+  
+  <path id="hackerrankprojects.runtime.module.classpath">
+    <pathelement location="${hackerrankprojects.testoutput.dir}"/>
+    <pathelement location="${hackerrankprojects.output.dir}"/>
+  </path>
+  
+  
+  <patternset id="excluded.from.module.hackerrankprojects">
+    <patternset refid="ignored.files"/>
+  </patternset>
+  
+  <patternset id="excluded.from.compilation.hackerrankprojects">
+    <patternset refid="excluded.from.module.hackerrankprojects"/>
+  </patternset>
+  
+  <path id="hackerrankprojects.module.sourcepath">
+    <dirset dir="${module.hackerrankprojects.basedir}">
+      <include name="src"/>
+    </dirset>
+  </path>
+  
+  
+  <target name="compile.module.hackerrankprojects" depends="compile.module.hackerrankprojects.production,compile.module.hackerrankprojects.tests" description="Compile module HackerrankProjects"/>
+  
+  <target name="compile.module.hackerrankprojects.production" depends="register.custom.compilers" description="Compile module HackerrankProjects; production classes">
+    <mkdir dir="${hackerrankprojects.output.dir}"/>
+    <javac2 destdir="${hackerrankprojects.output.dir}" debug="${compiler.debug}" nowarn="${compiler.generate.no.warnings}" memorymaximumsize="${compiler.max.memory}" fork="true" executable="${module.jdk.bin.hackerrankprojects}/javac">
+      <compilerarg line="${compiler.args.hackerrankprojects}"/>
+      <bootclasspath refid="hackerrankprojects.module.bootclasspath"/>
+      <classpath refid="hackerrankprojects.module.production.classpath"/>
+      <src refid="hackerrankprojects.module.sourcepath"/>
+      <patternset refid="excluded.from.compilation.hackerrankprojects"/>
+    </javac2>
+    
+    <copy todir="${hackerrankprojects.output.dir}">
+      <fileset dir="${module.hackerrankprojects.basedir}/src">
+        <patternset refid="compiler.resources"/>
+        <type type="file"/>
+      </fileset>
+    </copy>
+  </target>
+  
+  <target name="compile.module.hackerrankprojects.tests" depends="register.custom.compilers,compile.module.hackerrankprojects.production" description="compile module HackerrankProjects; test classes" unless="skip.tests"/>
+  
+  <target name="clean.module.hackerrankprojects" description="cleanup module">
+    <delete dir="${hackerrankprojects.output.dir}"/>
+    <delete dir="${hackerrankprojects.testoutput.dir}"/>
+  </target>
+</project>
